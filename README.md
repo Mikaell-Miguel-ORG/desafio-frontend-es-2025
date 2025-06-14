@@ -1,73 +1,167 @@
-# Welcome to your Lovable project
 
-## Project info
+# Kanban Board - Aplicação Frontend
 
-**URL**: https://lovable.dev/projects/da946295-cae8-4819-95c3-e497aff43cf8
+Uma aplicação Kanban moderna e responsiva desenvolvida em React com TypeScript, oferecendo uma interface intuitiva para gerenciamento de tarefas com funcionalidades completas de drag-and-drop.
 
-## How can I edit this code?
+## 🚀 Funcionalidades
 
-There are several ways of editing your application.
+### Gerenciamento de Tarefas
+- ✅ **Adicionar tarefas**: Crie novas tarefas com título, descrição e prioridade
+- ✅ **Editar tarefas**: Modifique informações de tarefas existentes
+- ✅ **Excluir tarefas**: Remova tarefas com confirmação de segurança
+- ✅ **Visualizar detalhes**: Veja informações completas de cada tarefa
 
-**Use Lovable**
+### Organização e Status
+- ✅ **Três colunas**: Pendente, Realizando e Concluída
+- ✅ **Drag and Drop**: Arraste tarefas entre colunas e reordene dentro da mesma coluna
+- ✅ **Prioridades**: Defina e visualize prioridades (Alta, Média, Baixa) com cores distintas
+- ✅ **Data de criação/atualização**: Controle temporal automático
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/da946295-cae8-4819-95c3-e497aff43cf8) and start prompting.
+### Filtros e Busca
+- ✅ **Busca por texto**: Filtre tarefas por título ou descrição
+- ✅ **Filtro por status**: Visualize tarefas de um status específico
+- ✅ **Contador de progresso**: Veja quantas tarefas estão em andamento
 
-Changes made via Lovable will be committed automatically to this repo.
+### Persistência e Performance
+- ✅ **localStorage**: Todos os dados são salvos localmente no navegador
+- ✅ **Sincronização automática**: Estado persistido automaticamente
+- ✅ **Interface responsiva**: Funciona perfeitamente em desktop, tablet e mobile
 
-**Use your preferred IDE**
+## 🛠️ Tecnologias Utilizadas
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **React 18** com TypeScript
+- **React Beautiful DND** para drag and drop
+- **React Router Dom** para roteamento
+- **Tailwind CSS** para estilização
+- **Lucide React** para ícones
+- **UUID** para geração de IDs únicos
+- **localStorage** para persistência de dados
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 📦 Instalação e Execução
 
-Follow these steps:
+### Pré-requisitos
+- Node.js (versão 16 ou superior)
+- npm ou yarn
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Passos para executar
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+1. **Clone o repositório**
+```bash
+git clone <url-do-repositorio>
+cd kanban-app
 ```
 
-**Edit a file directly in GitHub**
+2. **Instale as dependências**
+```bash
+npm install
+# ou
+yarn install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. **Execute a aplicação**
+```bash
+npm run dev
+# ou
+yarn dev
+```
 
-**Use GitHub Codespaces**
+4. **Acesse no navegador**
+```
+http://localhost:5173
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🏗️ Estrutura do Projeto
 
-## What technologies are used for this project?
+```
+src/
+├── components/           # Componentes reutilizáveis
+│   ├── Header.tsx       # Cabeçalho com busca e filtros
+│   ├── KanbanColumn.tsx # Coluna do quadro Kanban
+│   ├── TaskCard.tsx     # Cartão individual de tarefa
+│   ├── AddTaskModal.tsx # Modal para adicionar tarefa
+│   ├── EditTaskModal.tsx # Modal para editar tarefa
+│   └── TaskDetailsModal.tsx # Modal de detalhes da tarefa
+├── hooks/               # Hooks customizados
+│   └── useKanban.ts    # Hook principal para gerenciamento do estado
+├── pages/               # Páginas da aplicação
+│   └── KanbanBoard.tsx # Página principal do quadro
+├── types/               # Definições de tipos TypeScript
+│   └── kanban.ts       # Interfaces e tipos do domínio
+└── App.tsx             # Componente raiz da aplicação
+```
 
-This project is built with:
+## 🎨 Design e Interface
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+A aplicação segue um design moderno com:
+- **Tema escuro** para reduzir fadiga visual
+- **Cores organizadas por status**: Vermelho (Pendente), Azul (Realizando), Verde (Concluída)
+- **Indicadores de prioridade** com cores distintas
+- **Animações suaves** para interações drag-and-drop
+- **Layout responsivo** que se adapta a diferentes tamanhos de tela
 
-## How can I deploy this project?
+## 💾 Persistência de Dados
 
-Simply open [Lovable](https://lovable.dev/projects/da946295-cae8-4819-95c3-e497aff43cf8) and click on Share -> Publish.
+Todos os dados são armazenados no `localStorage` do navegador, incluindo:
+- Lista completa de tarefas
+- Estados das colunas
+- Timestamps de criação e atualização
+- Configurações de filtros (temporárias)
 
-## Can I connect a custom domain to my Lovable project?
+Os dados persistem entre sessões do navegador e são sincronizados automaticamente.
 
-Yes, you can!
+## 🔧 Funcionalidades Técnicas
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Drag and Drop
+- Implementado com `react-beautiful-dnd`
+- Suporte a reordenação dentro da mesma coluna
+- Movimentação entre colunas diferentes
+- Feedback visual durante o arraste
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### Gerenciamento de Estado
+- Hook customizado `useKanban` centraliza toda lógica
+- Estado reativo com `useState`
+- Sincronização automática com `useEffect`
+- Operações CRUD completas
+
+### Responsividade
+- Grid system adaptativo
+- Layout mobile-first
+- Componentes flexíveis
+- Navegação otimizada para touch
+
+## 🚀 Próximas Funcionalidades (Roadmap)
+
+- [ ] Categorias/Tags para tarefas
+- [ ] Anexos de arquivos
+- [ ] Histórico de alterações
+- [ ] Exportação de dados
+- [ ] Temas personalizáveis
+- [ ] Atalhos de teclado
+- [ ] Notificações de prazo
+
+## 📱 Compatibilidade
+
+- ✅ Chrome/Edge (versões recentes)
+- ✅ Firefox (versões recentes)
+- ✅ Safari (versões recentes)
+- ✅ Dispositivos móveis (iOS/Android)
+
+## 🤝 Contribuição
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 👥 Desenvolvido por
+
+Desenvolvido como uma aplicação de demonstração para gerenciamento de tarefas com interface moderna e intuitiva.
+
+---
+
+**Nota**: Esta é uma aplicação 100% frontend. Todos os dados são armazenados localmente no navegador e não há integração com backend ou APIs externas.
