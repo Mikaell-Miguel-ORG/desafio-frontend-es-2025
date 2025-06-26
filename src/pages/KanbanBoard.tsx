@@ -161,6 +161,10 @@ const KanbanBoard: React.FC = () => {
         task={selectedTask}
         onClose={handleCloseModals}
         onEdit={handleEditTask}
+        onDelete={(taskId) => {
+          deleteTask(taskId);
+          handleCloseModals();
+        }}
       />
     </div>
   );

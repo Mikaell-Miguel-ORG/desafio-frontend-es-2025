@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { X, Edit } from 'lucide-react';
 import { Task } from '../types/kanban';
@@ -8,9 +7,10 @@ interface TaskDetailsModalProps {
   task: Task | null;
   onClose: () => void;
   onEdit: (task: Task) => void;
+  onDelete: (taskId: string) => void;
 }
 
-const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({ isOpen, task, onClose, onEdit }) => {
+const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({ isOpen, task, onClose, onEdit, onDelete }) => {
   if (!isOpen || !task) return null;
 
   const getPriorityColor = (priority: string) => {
@@ -130,12 +130,18 @@ const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({ isOpen, task, onClo
             </div>
           </div>
 
-          <div className="pt-4 border-t border-gray-700">
+          <div className="pt-4 border-t border-gray-700 flex gap-2">
             <button
               onClick={onClose}
-              className="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              className="flex-1 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
             >
               Fechar
+            </button>
+            <button
+              onClick={() => onDelete(task.id)}
+              className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Excluir
             </button>
           </div>
         </div>
