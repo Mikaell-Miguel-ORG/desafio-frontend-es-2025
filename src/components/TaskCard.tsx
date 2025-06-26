@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Task } from '../types/kanban';
 import { Edit, X } from 'lucide-react';
@@ -13,6 +12,8 @@ interface TaskCardProps {
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({ task, index, onEdit, onDelete, onClick }) => {
+  const [showConfirm, setShowConfirm] = useState(false);
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'alta':
@@ -46,9 +47,18 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, index, onEdit, onDelete, onCl
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (window.confirm('Tem certeza que deseja excluir esta tarefa?')) {
-      onDelete(task.id);
-    }
+    setShowConfirm(true);
+  };
+
+  const confirmDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onDelete(task.id);
+    setShowConfirm(false);
+  };
+
+  const cancelDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowConfirm(false);
   };
 
   return (
@@ -65,6 +75,28 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, index, onEdit, onDelete, onCl
           }`}
           onClick={() => onClick(task)}
         >
+          {/* Modal de confirmação de exclusão */}
+          {showConfirm && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+              <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-xs flex flex-col items-center">
+                <p className="text-white mb-4 text-center">Tem certeza que deseja excluir esta tarefa?</p>
+                <div className="flex gap-2 w-full">
+                  <button
+                    onClick={cancelDelete}
+                    className="flex-1 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={confirmDelete}
+                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    Excluir
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-white font-medium text-sm line-clamp-2">
               {task.title}
