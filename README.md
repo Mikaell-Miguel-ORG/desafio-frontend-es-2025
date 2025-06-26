@@ -1,5 +1,8 @@
-
 # Kanban Board - Aplicação Frontend
+
+> ⚡️ Esta aplicação foi construída majoritariamente utilizando a IA Lovable para geração do código base, e posteriormente aprimorada e corrigida manualmente, com adição de funcionalidades e melhorias.
+>
+> 📄 O prompt utilizado para geração do código está disponível na raiz do projeto: [prompt.md](./prompt.md)
 
 Uma aplicação Kanban moderna e responsiva desenvolvida em React com TypeScript, oferecendo uma interface intuitiva para gerenciamento de tarefas com funcionalidades completas de drag-and-drop.
 
@@ -67,7 +70,7 @@ yarn dev
 
 4. **Acesse no navegador**
 ```
-http://localhost:5173
+http://localhost:8080
 ```
 
 ## 🏗️ Estrutura do Projeto
