@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { useKanban } from '../hooks/useKanban';
@@ -28,6 +27,7 @@ const KanbanBoard: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [priorityFilter, setPriorityFilter] = useState<string | null>(null);
 
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
@@ -80,22 +80,24 @@ const KanbanBoard: React.FC = () => {
 
   // Filtrar tarefas se houver filtros ativos
   const getFilteredColumns = () => {
-    if (!filter && !statusFilter) return state.columns;
+    if (!filter && !statusFilter && !priorityFilter) return state.columns;
 
-    const filteredColumns = { ...state.columns };
-
-    Object.keys(filteredColumns).forEach(columnKey => {
-      const column = filteredColumns[columnKey as keyof typeof filteredColumns];
-      column.tasks = column.tasks.filter(task => {
-        const matchesText = !filter || 
-          task.title.toLowerCase().includes(filter.toLowerCase()) ||
-          task.description.toLowerCase().includes(filter.toLowerCase());
-        
-        const matchesStatus = !statusFilter || task.status === statusFilter;
-
-        return matchesText && matchesStatus;
-      });
-    });
+    // Deep copy das colunas e das tasks
+    const filteredColumns = Object.keys(state.columns).reduce((acc, columnKey) => {
+      const column = state.columns[columnKey as keyof typeof state.columns];
+      acc[columnKey as keyof typeof state.columns] = {
+        ...column,
+        tasks: column.tasks.filter(task => {
+          const matchesText = !filter || 
+            task.title.toLowerCase().includes(filter.toLowerCase()) ||
+            task.description.toLowerCase().includes(filter.toLowerCase());
+          const matchesStatus = !statusFilter || task.status === statusFilter;
+          const matchesPriority = !priorityFilter || task.priority === priorityFilter;
+          return matchesText && matchesStatus && matchesPriority;
+        })
+      };
+      return acc;
+    }, {} as typeof state.columns);
 
     return filteredColumns;
   };
@@ -110,6 +112,8 @@ const KanbanBoard: React.FC = () => {
         setFilter={setFilter}
         statusFilter={statusFilter}
         setStatusFilter={setStatusFilter}
+        priorityFilter={priorityFilter}
+        setPriorityFilter={setPriorityFilter}
         onAddTask={() => setIsAddModalOpen(true)}
         tasksInProgress={tasksInProgress.length}
       />

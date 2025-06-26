@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Search, Plus, Filter } from 'lucide-react';
 
@@ -7,6 +6,8 @@ interface HeaderProps {
   setFilter: (filter: string) => void;
   statusFilter: string;
   setStatusFilter: (status: string) => void;
+  priorityFilter: string | null;
+  setPriorityFilter: (priority: string | null) => void;
   onAddTask: () => void;
   tasksInProgress: number;
 }
@@ -16,6 +17,8 @@ const Header: React.FC<HeaderProps> = ({
   setFilter, 
   statusFilter, 
   setStatusFilter, 
+  priorityFilter,
+  setPriorityFilter,
   onAddTask,
   tasksInProgress 
 }) => {
@@ -52,6 +55,20 @@ const Header: React.FC<HeaderProps> = ({
               <option value="pendente">Pendente</option>
               <option value="realizando">Realizando</option>
               <option value="concluida">Concluída</option>
+            </select>
+          </div>
+
+          <div className="relative">
+            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <select
+              value={priorityFilter || ''}
+              onChange={(e) => setPriorityFilter(e.target.value || null)}
+              className="pl-10 pr-8 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer min-w-[140px]"
+            >
+              <option value="">Todas prioridades</option>
+              <option value="alta">Alta</option>
+              <option value="media">Média</option>
+              <option value="baixa">Baixa</option>
             </select>
           </div>
 
