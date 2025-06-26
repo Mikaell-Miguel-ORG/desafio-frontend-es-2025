@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Task, KanbanState } from '../types/kanban';
@@ -46,6 +45,11 @@ export const useKanban = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
+  const sortTasksByPriority = (tasks: Task[]) => {
+    const priorityOrder = { alta: 0, media: 1, baixa: 2 };
+    return tasks.slice().sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+  };
+
   const addTask = (title: string, description: string, priority: 'alta' | 'media' | 'baixa' = 'media') => {
     const newTask: Task = {
       id: uuidv4(),
@@ -63,7 +67,7 @@ export const useKanban = () => {
         ...prev.columns,
         pendente: {
           ...prev.columns.pendente,
-          tasks: [...prev.columns.pendente.tasks, newTask]
+          tasks: sortTasksByPriority([...prev.columns.pendente.tasks, newTask])
         }
       }
     }));
@@ -74,21 +78,19 @@ export const useKanban = () => {
   const updateTask = (taskId: string, updates: Partial<Task>) => {
     setState(prev => {
       const newState = { ...prev };
-      
-      // Encontrar e atualizar a tarefa em qualquer coluna
       Object.keys(newState.columns).forEach(columnKey => {
         const column = newState.columns[columnKey as keyof typeof newState.columns];
         const taskIndex = column.tasks.findIndex(task => task.id === taskId);
-        
         if (taskIndex !== -1) {
           column.tasks[taskIndex] = {
             ...column.tasks[taskIndex],
             ...updates,
             updatedAt: new Date().toISOString()
           };
+          // Ordena após atualizar
+          column.tasks = sortTasksByPriority(column.tasks);
         }
       });
-
       return newState;
     });
   };
@@ -97,23 +99,22 @@ export const useKanban = () => {
     setState(prev => {
       const newState = { ...prev };
       let taskToMove: Task | null = null;
-
-      // Encontrar e remover a tarefa da coluna atual
       Object.keys(newState.columns).forEach(columnKey => {
         const column = newState.columns[columnKey as keyof typeof newState.columns];
         const taskIndex = column.tasks.findIndex(task => task.id === taskId);
-        
         if (taskIndex !== -1) {
           taskToMove = { ...column.tasks[taskIndex], status: newStatus, updatedAt: new Date().toISOString() };
           column.tasks.splice(taskIndex, 1);
+          // Ordena após remover
+          column.tasks = sortTasksByPriority(column.tasks);
         }
       });
-
-      // Adicionar a tarefa na nova coluna
       if (taskToMove) {
-        newState.columns[newStatus].tasks.push(taskToMove);
+        newState.columns[newStatus].tasks = sortTasksByPriority([
+          ...newState.columns[newStatus].tasks,
+          taskToMove
+        ]);
       }
-
       return newState;
     });
   };
@@ -137,6 +138,8 @@ export const useKanban = () => {
       const column = newState.columns[columnId as keyof typeof newState.columns];
       const [removed] = column.tasks.splice(startIndex, 1);
       column.tasks.splice(endIndex, 0, removed);
+      // Ordena por prioridade: alta > média > baixa
+      column.tasks = sortTasksByPriority(column.tasks);
       return newState;
     });
   };
